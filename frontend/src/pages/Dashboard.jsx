@@ -21,7 +21,7 @@ export default function Dashboard() {
   const fetchMembers = async () => {
     try {
       const res = await axios.get('https://massage-app-zdtd.onrender.com/api/members');
-      setMembers(res.data);
+      setMembers(res.data || []);
     } catch (error) {
       console.error("Error fetching members", error);
     }
@@ -30,7 +30,7 @@ export default function Dashboard() {
   const fetchPlans = async () => {
     try {
       const res = await axios.get('https://massage-app-zdtd.onrender.com/api/topup-plans');
-      setPlans(res.data);
+      setPlans(res.data || []);
     } catch (error) {
       console.error("Error fetching plans", error);
     }
@@ -39,7 +39,7 @@ export default function Dashboard() {
   const fetchRevenue = async () => {
     try {
       const res = await axios.get('https://massage-app-zdtd.onrender.com/api/revenue/monthly');
-      setRevenueData(res.data);
+      setRevenueData(res.data || []);
     } catch (error) {
       console.error("Error fetching revenue", error);
     }
@@ -48,7 +48,7 @@ export default function Dashboard() {
   const fetchServicePlans = async () => {
     try {
       const res = await axios.get('https://massage-app-zdtd.onrender.com/api/service-plans');
-      setServicePlans(res.data);
+      setServicePlans(res.data || []);
     } catch (error) {
       console.error("Error fetching service plans", error);
     }
@@ -401,7 +401,7 @@ export default function Dashboard() {
             <h2>營收與消費統計 (Revenue & Deductions)</h2>
             <div style={{ width: '100%', height: 350, marginTop: '2rem' }}>
               <ResponsiveContainer>
-                <BarChart data={[...revenueData].reverse()} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <BarChart data={[...(revenueData || [])].reverse()} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
                   <XAxis dataKey="month" stroke="var(--text-secondary)" />
                   <YAxis stroke="var(--text-secondary)" />

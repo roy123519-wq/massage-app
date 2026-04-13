@@ -23,15 +23,15 @@ export default function MemberDetail() {
         axios.get('https://massage-app-zdtd.onrender.com/api/topup-plans'),
         axios.get('https://massage-app-zdtd.onrender.com/api/service-plans')
       ]);
-      const currentMember = membersRes.data.find(m => m.id === parseInt(id));
+      const currentMember = (membersRes.data || []).find(m => m.id === parseInt(id));
       if (!currentMember) {
         navigate('/');
         return;
       }
       setMember(currentMember);
-      setTransactions(txRes.data);
-      setPlans(plansRes.data);
-      setServicePlans(servicePlansRes.data);
+      setTransactions(txRes.data || []);
+      setPlans(plansRes.data || []);
+      setServicePlans(servicePlansRes.data || []);
     } catch (error) {
       console.error("Error fetching data", error);
     }
