@@ -1,0 +1,34 @@
+# Node.js
+node_modules/
+dist/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+massage-backend
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+massage.db
+
+# Environment variables
+.env
+.env.local
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
