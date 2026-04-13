@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function Dashboard() {
   const [members, setMembers] = useState([]);
@@ -268,13 +270,30 @@ export default function Dashboard() {
                   placeholder="可選"
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group custom-datepicker-wrapper" style={{ width: '100%' }}>
                 <label>生日 (Birth Date)</label>
-                <input
-                  type="date"
-                  value={newMember.birth_date}
-                  onChange={(e) => setNewMember({ ...newMember, birth_date: e.target.value })}
-                />
+                <div style={{ width: '100%' }}>
+                  <DatePicker
+                    selected={newMember.birth_date ? new Date(newMember.birth_date) : null}
+                    onChange={(date) => {
+                      if (!date) {
+                        setNewMember({ ...newMember, birth_date: '' });
+                        return;
+                      }
+                      const d = new Date(date);
+                      const offset = d.getTimezoneOffset();
+                      d.setMinutes(d.getMinutes() - offset);
+                      setNewMember({ ...newMember, birth_date: d.toISOString().split('T')[0] });
+                    }}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="點擊選擇生日..."
+                    showYearDropdown
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={100}
+                    className="w-100"
+                    wrapperClassName="w-100"
+                  />
+                </div>
               </div>
               <div className="button-group">
                 <button type="button" onClick={() => setShowAddModal(false)}>取消</button>
@@ -402,9 +421,9 @@ export default function Dashboard() {
           <div className="modal" style={{ maxWidth: '700px', width: '90%' }}>
             <h2>營收與消費統計 (Revenue & Deductions)</h2>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1rem' }}>
-              <button style={{ backgroundColor: revenuePeriod === 'yearly' ? 'var(--primary)' : 'var(--input-bg)', color: revenuePeriod === 'yearly' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('yearly'); fetchRevenue('yearly'); }}>年度</button>
-              <button style={{ backgroundColor: revenuePeriod === 'monthly' ? 'var(--primary)' : 'var(--input-bg)', color: revenuePeriod === 'monthly' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('monthly'); fetchRevenue('monthly'); }}>月份</button>
-              <button style={{ backgroundColor: revenuePeriod === 'daily' ? 'var(--primary)' : 'var(--input-bg)', color: revenuePeriod === 'daily' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('daily'); fetchRevenue('daily'); }}>每日</button>
+              <button style={{ backgroundColor: revenuePeriod === 'yearly' ? 'var(--accent)' : 'var(--input-bg)', color: revenuePeriod === 'yearly' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('yearly'); fetchRevenue('yearly'); }}>年度</button>
+              <button style={{ backgroundColor: revenuePeriod === 'monthly' ? 'var(--accent)' : 'var(--input-bg)', color: revenuePeriod === 'monthly' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('monthly'); fetchRevenue('monthly'); }}>月份</button>
+              <button style={{ backgroundColor: revenuePeriod === 'daily' ? 'var(--accent)' : 'var(--input-bg)', color: revenuePeriod === 'daily' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('daily'); fetchRevenue('daily'); }}>每日</button>
             </div>
             <div style={{ width: '100%', height: 350, marginTop: '2rem' }}>
               <ResponsiveContainer>

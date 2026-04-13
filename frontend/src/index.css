@@ -203,3 +203,15 @@ tbody tr:hover {
   margin: 0 auto;
   width: 100%;
 }
+
+.w-100, .react-datepicker-wrapper {
+  width: 100%;
+}
+
+/* Force dark theme friendly colors on datepicker inputs */
+.react-datepicker__input-container input {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
