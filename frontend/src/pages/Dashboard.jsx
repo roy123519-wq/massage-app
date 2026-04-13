@@ -73,7 +73,7 @@ export default function Dashboard() {
   const handleAddMember = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/members', newMember);
+      await axios.post('https://massage-app-zdtd.onrender.com/api/members', newMember);
       setShowAddModal(false);
       setNewMember({ name: '', phone: '', email: '', birth_date: '', gender: '' });
       fetchMembers();
@@ -85,7 +85,7 @@ export default function Dashboard() {
   const handleDelete = async (id) => {
     if (window.confirm('確定要刪除此會員嗎？')) {
       try {
-        await axios.delete(`http://localhost:8080/api/members/${id}`);
+        await axios.delete(`https://massage-app-zdtd.onrender.com/api/members/${id}`);
         fetchMembers();
       } catch (error) {
         alert("刪除會員失敗");
@@ -96,7 +96,7 @@ export default function Dashboard() {
   const handleAddPlan = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/topup-plans', {
+      await axios.post('https://massage-app-zdtd.onrender.com/api/topup-plans', {
         name: newPlan.name,
         price: parseInt(newPlan.price),
         bonus: parseInt(newPlan.bonus)
@@ -111,7 +111,7 @@ export default function Dashboard() {
   const handleDeletePlan = async (id) => {
     if (window.confirm('確定要刪除此儲值方案嗎？')) {
       try {
-        await axios.delete(`http://localhost:8080/api/topup-plans/${id}`);
+        await axios.delete(`https://massage-app-zdtd.onrender.com/api/topup-plans/${id}`);
         fetchPlans();
       } catch (error) {
         alert("刪除方案失敗");
@@ -122,7 +122,7 @@ export default function Dashboard() {
   const handleAddServicePlan = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/service-plans', {
+      await axios.post('https://massage-app-zdtd.onrender.com/api/service-plans', {
         name: newServicePlan.name,
         price: parseInt(newServicePlan.price)
       });
@@ -136,7 +136,7 @@ export default function Dashboard() {
   const handleDeleteServicePlan = async (id) => {
     if (window.confirm('確定要刪除此扣款方案嗎？')) {
       try {
-        await axios.delete(`http://localhost:8080/api/service-plans/${id}`);
+        await axios.delete(`https://massage-app-zdtd.onrender.com/api/service-plans/${id}`);
         fetchServicePlans();
       } catch (error) {
         alert("刪除扣款方案失敗");
