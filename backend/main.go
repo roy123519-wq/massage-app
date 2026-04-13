@@ -274,23 +274,37 @@ func deleteTopupPlan(c *gin.Context) {
 }
 
 func getMonthlyRevenue(c *gin.Context) {
+	periodType := c.DefaultQuery("period", "monthly")
+	
 	var results []struct {
-		Month            string `json:"month"`
+		Period            string `json:"period"`
 		TopupRevenue     int    `json:"topup_revenue"`
 		DeductionRevenue int    `json:"deduction_revenue"`
 	}
 
 	dialect := database.DB.Dialector.Name()
-	selectQuery := "strftime('%Y-%m', created_at) as month, SUM(CASE WHEN type = 'topup' THEN amount ELSE 0 END) as topup_revenue, SUM(CASE WHEN type = 'deduction' THEN ABS(amount) ELSE 0 END) as deduction_revenue"
+	
+	sqliteFormat := "'%Y-%m'"
+	pgFormat := "'YYYY-MM'"
+	
+	if periodType == "yearly" {
+		sqliteFormat = "'%Y'"
+		pgFormat = "'YYYY'"
+	} else if periodType == "daily" {
+		sqliteFormat = "'%Y-%m-%d'"
+		pgFormat = "'YYYY-MM-DD'"
+	}
+
+	selectQuery := fmt.Sprintf("strftime(%s, created_at) as period, SUM(CASE WHEN type = 'topup' THEN amount ELSE 0 END) as topup_revenue, SUM(CASE WHEN type = 'deduction' THEN ABS(amount) ELSE 0 END) as deduction_revenue", sqliteFormat)
 	
 	if dialect == "postgres" {
-		selectQuery = "TO_CHAR(created_at, 'YYYY-MM') as month, SUM(CASE WHEN type = 'topup' THEN amount ELSE 0 END) as topup_revenue, SUM(CASE WHEN type = 'deduction' THEN ABS(amount) ELSE 0 END) as deduction_revenue"
+		selectQuery = fmt.Sprintf("TO_CHAR(created_at, %s) as period, SUM(CASE WHEN type = 'topup' THEN amount ELSE 0 END) as topup_revenue, SUM(CASE WHEN type = 'deduction' THEN ABS(amount) ELSE 0 END) as deduction_revenue", pgFormat)
 	}
 
 	database.DB.Model(&models.Transaction{}).
 		Select(selectQuery).
-		Group("month").
-		Order("month desc").
+		Group("period").
+		Order("period desc").
 		Scan(&results)
 
 	c.JSON(http.StatusOK, results)

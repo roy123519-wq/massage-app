@@ -16,6 +16,7 @@ export default function Dashboard() {
   const [newPlan, setNewPlan] = useState({ name: '', price: '', bonus: '' });
   const [newServicePlan, setNewServicePlan] = useState({ name: '', price: '' });
   const [revenueData, setRevenueData] = useState([]);
+  const [revenuePeriod, setRevenuePeriod] = useState('monthly');
   const navigate = useNavigate();
 
   const fetchMembers = async () => {
@@ -36,9 +37,9 @@ export default function Dashboard() {
     }
   };
 
-  const fetchRevenue = async () => {
+  const fetchRevenue = async (period = revenuePeriod) => {
     try {
-      const res = await axios.get('https://massage-app-zdtd.onrender.com/api/revenue/monthly');
+      const res = await axios.get(`https://massage-app-zdtd.onrender.com/api/revenue/monthly?period=${period}`);
       setRevenueData(res.data || []);
     } catch (error) {
       console.error("Error fetching revenue", error);
@@ -55,7 +56,8 @@ export default function Dashboard() {
   };
 
   const handleViewRevenue = () => {
-    fetchRevenue();
+    fetchRevenue('monthly');
+    setRevenuePeriod('monthly');
     setShowRevenueModal(true);
   };
 
@@ -399,13 +401,19 @@ export default function Dashboard() {
         <div className="modal-overlay">
           <div className="modal" style={{ maxWidth: '700px', width: '90%' }}>
             <h2>營收與消費統計 (Revenue & Deductions)</h2>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1rem' }}>
+              <button style={{ backgroundColor: revenuePeriod === 'yearly' ? 'var(--primary)' : 'var(--input-bg)', color: revenuePeriod === 'yearly' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('yearly'); fetchRevenue('yearly'); }}>年度</button>
+              <button style={{ backgroundColor: revenuePeriod === 'monthly' ? 'var(--primary)' : 'var(--input-bg)', color: revenuePeriod === 'monthly' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('monthly'); fetchRevenue('monthly'); }}>月份</button>
+              <button style={{ backgroundColor: revenuePeriod === 'daily' ? 'var(--primary)' : 'var(--input-bg)', color: revenuePeriod === 'daily' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('daily'); fetchRevenue('daily'); }}>每日</button>
+            </div>
             <div style={{ width: '100%', height: 350, marginTop: '2rem' }}>
               <ResponsiveContainer>
                 <BarChart data={[...(revenueData || [])].reverse()} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                  <XAxis dataKey="month" stroke="var(--text-secondary)" />
+                  <XAxis dataKey="period" stroke="var(--text-secondary)" />
                   <YAxis stroke="var(--text-secondary)" />
                   <Tooltip
+                    cursor={{ fill: 'transparent' }}
                     contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px' }}
                     itemStyle={{ color: 'var(--text-primary)' }}
                   />
@@ -420,7 +428,7 @@ export default function Dashboard() {
               <table style={{ fontSize: '0.9rem' }}>
                 <thead>
                   <tr>
-                    <th>月份</th>
+                    <th>時間</th>
                     <th>總儲值額</th>
                     <th>總扣款額</th>
                   </tr>
@@ -429,7 +437,7 @@ export default function Dashboard() {
                   {revenueData && revenueData.length > 0 ? (
                     revenueData.map((data, index) => (
                       <tr key={index}>
-                        <td>{data.month}</td>
+                        <td>{data.period}</td>
                         <td style={{ color: 'var(--success)' }}>${data.topup_revenue}</td>
                         <td style={{ color: 'var(--danger)' }}>${data.deduction_revenue}</td>
                       </tr>
