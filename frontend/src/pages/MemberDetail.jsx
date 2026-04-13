@@ -11,17 +11,17 @@ export default function MemberDetail() {
   const [servicePlans, setServicePlans] = useState([]);
   const [showTransactionModal, setShowTransactionModal] = useState(false);
   const [transactionType, setTransactionType] = useState('topup');
-  
+
   const [selectedPlanId, setSelectedPlanId] = useState('');
   const [transactionForm, setTransactionForm] = useState({ amount: '', note: '' });
 
   const fetchMemberAndTransactions = async () => {
     try {
       const [membersRes, txRes, plansRes, servicePlansRes] = await Promise.all([
-        axios.get('http://localhost:8080/api/members'),
-        axios.get(`http://localhost:8080/api/members/${id}/transactions`),
-        axios.get('http://localhost:8080/api/topup-plans'),
-        axios.get('http://localhost:8080/api/service-plans')
+        axios.get('https://massage-app-zdtd.onrender.com/api/members'),
+        axios.get(`https://massage-app-zdtd.onrender.com/api/members/${id}/transactions`),
+        axios.get('https://massage-app-zdtd.onrender.com/api/topup-plans'),
+        axios.get('https://massage-app-zdtd.onrender.com/api/service-plans')
       ]);
       const currentMember = membersRes.data.find(m => m.id === parseInt(id));
       if (!currentMember) {
@@ -50,7 +50,7 @@ export default function MemberDetail() {
       const plan = plans.find(p => p.id === parseInt(selectedPlanId));
       if (plan) {
         finalAmount = plan.price + plan.bonus; // Total added to balance
-        finalNote = plan.name; 
+        finalNote = plan.name;
       }
     } else if (transactionType === 'deduction' && selectedPlanId) {
       const servicePlan = servicePlans.find(p => p.id === parseInt(selectedPlanId));
@@ -63,7 +63,7 @@ export default function MemberDetail() {
     }
 
     try {
-      await axios.post(`http://localhost:8080/api/members/${id}/transactions`, {
+      await axios.post(`https://massage-app-zdtd.onrender.com/api/members/${id}/transactions`, {
         amount: finalAmount,
         type: transactionType,
         note: finalNote
@@ -86,10 +86,10 @@ export default function MemberDetail() {
           <Link to="/">← 回到會員列表</Link>
         </div>
         <div>
-          <button style={{ marginRight: '1rem', backgroundColor: 'var(--success)', color: '#121212' }} onClick={() => { setTransactionType('topup'); setSelectedPlanId(''); setTransactionForm({amount:'', note:''}); setShowTransactionModal(true); }}>
+          <button style={{ marginRight: '1rem', backgroundColor: 'var(--success)', color: '#121212' }} onClick={() => { setTransactionType('topup'); setSelectedPlanId(''); setTransactionForm({ amount: '', note: '' }); setShowTransactionModal(true); }}>
             儲值 (Top Up)
           </button>
-          <button className="danger" onClick={() => { setTransactionType('deduction'); setTransactionForm({amount:'', note:''}); setShowTransactionModal(true); }}>
+          <button className="danger" onClick={() => { setTransactionType('deduction'); setTransactionForm({ amount: '', note: '' }); setShowTransactionModal(true); }}>
             扣款 (Deduct)
           </button>
         </div>
@@ -152,9 +152,9 @@ export default function MemberDetail() {
                     <tr key={tx.id}>
                       <td>{date}</td>
                       <td>
-                        <span style={{ 
-                          padding: '0.2rem 0.5rem', 
-                          borderRadius: '4px', 
+                        <span style={{
+                          padding: '0.2rem 0.5rem',
+                          borderRadius: '4px',
                           backgroundColor: isTopup ? 'rgba(3, 218, 198, 0.1)' : 'rgba(207, 102, 121, 0.1)',
                           color: isTopup ? 'var(--success)' : 'var(--danger)',
                           fontSize: '0.85rem'
@@ -180,11 +180,11 @@ export default function MemberDetail() {
           <div className="modal">
             <h2>{transactionType === 'topup' ? '會員儲值' : '會員扣款'}</h2>
             <form onSubmit={handleTransactionSubmit}>
-              
+
               <div className="form-group">
                 <label>{transactionType === 'topup' ? '儲值方案' : '扣款方案'}</label>
-                <select 
-                  value={selectedPlanId} 
+                <select
+                  value={selectedPlanId}
                   onChange={(e) => setSelectedPlanId(e.target.value)}
                   style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid var(--border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-primary)', marginBottom: '1rem' }}
                 >
@@ -209,20 +209,20 @@ export default function MemberDetail() {
                 <>
                   <div className="form-group">
                     <label>金額 (額度)</label>
-                    <input 
-                      type="number" 
+                    <input
+                      type="number"
                       min="1"
-                      value={transactionForm.amount} 
-                      onChange={(e) => setTransactionForm({...transactionForm, amount: e.target.value})} 
+                      value={transactionForm.amount}
+                      onChange={(e) => setTransactionForm({ ...transactionForm, amount: e.target.value })}
                       required={!selectedPlanId}
                     />
                   </div>
                   <div className="form-group">
                     <label>備註 (可選)</label>
-                    <input 
-                      type="text" 
-                      value={transactionForm.note} 
-                      onChange={(e) => setTransactionForm({...transactionForm, note: e.target.value})} 
+                    <input
+                      type="text"
+                      value={transactionForm.note}
+                      onChange={(e) => setTransactionForm({ ...transactionForm, note: e.target.value })}
                       placeholder={transactionType === 'topup' ? "例: 現金儲值" : "例: 60分鐘指壓"}
                     />
                   </div>

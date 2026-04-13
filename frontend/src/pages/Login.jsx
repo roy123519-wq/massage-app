@@ -11,7 +11,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8080/api/login', { username, password });
+      const res = await axios.post('https://massage-app-zdtd.onrender.com/api/login', { username, password });
       if (res.data.message === "Login successful") {
         localStorage.setItem('adminToken', res.data.admin.username);
         navigate('/');
@@ -29,21 +29,21 @@ export default function Login() {
         <form onSubmit={handleLogin}>
           <div className="form-group">
             <label>帳號 (Username)</label>
-            <input 
-              type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-              required 
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
               placeholder="admin"
             />
           </div>
           <div className="form-group">
             <label>密碼 (Password)</label>
-            <input 
-              type="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
               placeholder="password123"
             />
           </div>

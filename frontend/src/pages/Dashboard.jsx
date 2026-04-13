@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   const fetchMembers = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/members');
+      const res = await axios.get('https://massage-app-zdtd.onrender.com/api/members');
       setMembers(res.data);
     } catch (error) {
       console.error("Error fetching members", error);
@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   const fetchPlans = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/topup-plans');
+      const res = await axios.get('https://massage-app-zdtd.onrender.com/api/topup-plans');
       setPlans(res.data);
     } catch (error) {
       console.error("Error fetching plans", error);
@@ -38,7 +38,7 @@ export default function Dashboard() {
 
   const fetchRevenue = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/revenue/monthly');
+      const res = await axios.get('https://massage-app-zdtd.onrender.com/api/revenue/monthly');
       setRevenueData(res.data);
     } catch (error) {
       console.error("Error fetching revenue", error);
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
   const fetchServicePlans = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/service-plans');
+      const res = await axios.get('https://massage-app-zdtd.onrender.com/api/service-plans');
       setServicePlans(res.data);
     } catch (error) {
       console.error("Error fetching service plans", error);
@@ -155,9 +155,9 @@ export default function Dashboard() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <h2 style={{ margin: 0 }}>會員列表</h2>
-            <input 
-              type="text" 
-              placeholder="搜尋姓名或電話..." 
+            <input
+              type="text"
+              placeholder="搜尋姓名或電話..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{ padding: '0.4rem 0.8rem', width: '250px' }}
@@ -229,27 +229,27 @@ export default function Dashboard() {
             <form onSubmit={handleAddMember}>
               <div className="form-group">
                 <label>姓名 (Name)</label>
-                <input 
-                  type="text" 
-                  value={newMember.name} 
-                  onChange={(e) => setNewMember({...newMember, name: e.target.value})} 
-                  required 
+                <input
+                  type="text"
+                  value={newMember.name}
+                  onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+                  required
                 />
               </div>
               <div className="form-group">
                 <label>電話 (Phone)</label>
-                <input 
-                  type="text" 
-                  value={newMember.phone} 
-                  onChange={(e) => setNewMember({...newMember, phone: e.target.value})} 
-                  required 
+                <input
+                  type="text"
+                  value={newMember.phone}
+                  onChange={(e) => setNewMember({ ...newMember, phone: e.target.value })}
+                  required
                 />
               </div>
               <div className="form-group">
                 <label>性別 (Gender)</label>
-                <select 
-                  value={newMember.gender} 
-                  onChange={(e) => setNewMember({...newMember, gender: e.target.value})}
+                <select
+                  value={newMember.gender}
+                  onChange={(e) => setNewMember({ ...newMember, gender: e.target.value })}
                   required
                 >
                   <option value="">請選擇</option>
@@ -259,19 +259,19 @@ export default function Dashboard() {
               </div>
               <div className="form-group">
                 <label>信箱 (Email)</label>
-                <input 
-                  type="email" 
-                  value={newMember.email} 
-                  onChange={(e) => setNewMember({...newMember, email: e.target.value})} 
+                <input
+                  type="email"
+                  value={newMember.email}
+                  onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
                   placeholder="可選"
                 />
               </div>
               <div className="form-group">
                 <label>生日 (Birth Date)</label>
-                <input 
-                  type="date" 
-                  value={newMember.birth_date} 
-                  onChange={(e) => setNewMember({...newMember, birth_date: e.target.value})} 
+                <input
+                  type="date"
+                  value={newMember.birth_date}
+                  onChange={(e) => setNewMember({ ...newMember, birth_date: e.target.value })}
                 />
               </div>
               <div className="button-group">
@@ -291,20 +291,20 @@ export default function Dashboard() {
               <form onSubmit={handleAddPlan} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr auto', gap: '0.5rem', alignItems: 'end' }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>方案名稱</label>
-                  <input type="text" value={newPlan.name} onChange={(e) => setNewPlan({...newPlan, name: e.target.value})} placeholder="例: 儲值1000送200" required />
+                  <input type="text" value={newPlan.name} onChange={(e) => setNewPlan({ ...newPlan, name: e.target.value })} placeholder="例: 儲值1000送200" required />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>實收金額</label>
-                  <input type="number" min="0" value={newPlan.price} onChange={(e) => setNewPlan({...newPlan, price: e.target.value})} required />
+                  <input type="number" min="0" value={newPlan.price} onChange={(e) => setNewPlan({ ...newPlan, price: e.target.value })} required />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>贈送金額</label>
-                  <input type="number" min="0" value={newPlan.bonus} onChange={(e) => setNewPlan({...newPlan, bonus: e.target.value})} required />
+                  <input type="number" min="0" value={newPlan.bonus} onChange={(e) => setNewPlan({ ...newPlan, bonus: e.target.value })} required />
                 </div>
                 <button type="submit" style={{ height: '42px', backgroundColor: 'var(--success)', color: '#121212' }}>新增</button>
               </form>
             </div>
-            
+
             <div className="table-container" style={{ maxHeight: '300px', overflowY: 'auto' }}>
               <table style={{ fontSize: '0.9rem' }}>
                 <thead>
@@ -350,16 +350,16 @@ export default function Dashboard() {
               <form onSubmit={handleAddServicePlan} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr auto', gap: '0.5rem', alignItems: 'end' }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>方案名稱</label>
-                  <input type="text" value={newServicePlan.name} onChange={(e) => setNewServicePlan({...newServicePlan, name: e.target.value})} placeholder="例: 60分鐘指壓" required />
+                  <input type="text" value={newServicePlan.name} onChange={(e) => setNewServicePlan({ ...newServicePlan, name: e.target.value })} placeholder="例: 60分鐘指壓" required />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>扣除</label>
-                  <input type="number" min="0" value={newServicePlan.price} onChange={(e) => setNewServicePlan({...newServicePlan, price: e.target.value})} placeholder="金額" required />
+                  <input type="number" min="0" value={newServicePlan.price} onChange={(e) => setNewServicePlan({ ...newServicePlan, price: e.target.value })} placeholder="金額" required />
                 </div>
                 <button type="submit" style={{ height: '42px', backgroundColor: 'var(--success)', color: '#121212' }}>新增</button>
               </form>
             </div>
-            
+
             <div className="table-container" style={{ maxHeight: '300px', overflowY: 'auto' }}>
               <table style={{ fontSize: '0.9rem' }}>
                 <thead>
@@ -405,7 +405,7 @@ export default function Dashboard() {
                   <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
                   <XAxis dataKey="month" stroke="var(--text-secondary)" />
                   <YAxis stroke="var(--text-secondary)" />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px' }}
                     itemStyle={{ color: 'var(--text-primary)' }}
                   />
@@ -415,7 +415,7 @@ export default function Dashboard() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            
+
             <div className="table-container" style={{ maxHeight: '200px', overflowY: 'auto', marginTop: '1rem' }}>
               <table style={{ fontSize: '0.9rem' }}>
                 <thead>
