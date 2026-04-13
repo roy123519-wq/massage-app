@@ -280,8 +280,15 @@ func getMonthlyRevenue(c *gin.Context) {
 		DeductionRevenue int    `json:"deduction_revenue"`
 	}
 
+	dialect := database.DB.Dialector.Name()
+	selectQuery := "strftime('%Y-%m', created_at) as month, SUM(CASE WHEN type = 'topup' THEN amount ELSE 0 END) as topup_revenue, SUM(CASE WHEN type = 'deduction' THEN ABS(amount) ELSE 0 END) as deduction_revenue"
+	
+	if dialect == "postgres" {
+		selectQuery = "TO_CHAR(created_at, 'YYYY-MM') as month, SUM(CASE WHEN type = 'topup' THEN amount ELSE 0 END) as topup_revenue, SUM(CASE WHEN type = 'deduction' THEN ABS(amount) ELSE 0 END) as deduction_revenue"
+	}
+
 	database.DB.Model(&models.Transaction{}).
-		Select("strftime('%Y-%m', created_at) as month, SUM(CASE WHEN type = 'topup' THEN amount ELSE 0 END) as topup_revenue, SUM(CASE WHEN type = 'deduction' THEN ABS(amount) ELSE 0 END) as deduction_revenue").
+		Select(selectQuery).
 		Group("month").
 		Order("month desc").
 		Scan(&results)
