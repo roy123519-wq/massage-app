@@ -156,25 +156,25 @@ export default function Dashboard() {
       </nav>
 
       <main className="main-content">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div className="header-actions">
+          <div className="header-actions-left">
             <h2 style={{ margin: 0 }}>會員列表</h2>
             <input
               type="text"
               placeholder="搜尋姓名或電話..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ padding: '0.4rem 0.8rem', width: '250px' }}
+              style={{ padding: '0.4rem 0.8rem', width: '250px', maxWidth: '100%' }}
             />
           </div>
-          <div>
-            <button style={{ marginRight: '1rem', backgroundColor: 'var(--input-bg)', color: 'var(--text-primary)' }} onClick={handleViewRevenue}>
+          <div className="header-actions-right">
+            <button style={{ backgroundColor: 'var(--input-bg)', color: 'var(--text-primary)' }} onClick={handleViewRevenue}>
               📊 營收與消費統計
             </button>
-            <button style={{ marginRight: '1rem', backgroundColor: 'var(--input-bg)', color: 'var(--text-primary)' }} onClick={() => setShowServicePlanModal(true)}>
+            <button style={{ backgroundColor: 'var(--input-bg)', color: 'var(--text-primary)' }} onClick={() => setShowServicePlanModal(true)}>
               ⚙️ 扣款方案管理
             </button>
-            <button style={{ marginRight: '1rem', backgroundColor: 'var(--input-bg)', color: 'var(--text-primary)' }} onClick={() => setShowPlanModal(true)}>
+            <button style={{ backgroundColor: 'var(--input-bg)', color: 'var(--text-primary)' }} onClick={() => setShowPlanModal(true)}>
               ⚙️ 儲值方案管理
             </button>
             <button onClick={() => setShowAddModal(true)}>+ 新增會員</button>
@@ -309,7 +309,7 @@ export default function Dashboard() {
           <div className="modal" style={{ maxWidth: '600px' }}>
             <h2>固定儲值方案管理</h2>
             <div style={{ marginBottom: '1.5rem' }}>
-              <form onSubmit={handleAddPlan} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr auto', gap: '0.5rem', alignItems: 'end' }}>
+              <form onSubmit={handleAddPlan} className="plan-form-grid">
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>方案名稱</label>
                   <input type="text" value={newPlan.name} onChange={(e) => setNewPlan({ ...newPlan, name: e.target.value })} placeholder="例: 儲值1000送200" required />
@@ -368,7 +368,7 @@ export default function Dashboard() {
           <div className="modal" style={{ maxWidth: '500px' }}>
             <h2>固定扣款方案管理</h2>
             <div style={{ marginBottom: '1.5rem' }}>
-              <form onSubmit={handleAddServicePlan} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr auto', gap: '0.5rem', alignItems: 'end' }}>
+              <form onSubmit={handleAddServicePlan} className="plan-form-grid-3">
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>方案名稱</label>
                   <input type="text" value={newServicePlan.name} onChange={(e) => setNewServicePlan({ ...newServicePlan, name: e.target.value })} placeholder="例: 60分鐘指壓" required />
@@ -420,7 +420,7 @@ export default function Dashboard() {
         <div className="modal-overlay">
           <div className="modal" style={{ maxWidth: '700px', width: '90%' }}>
             <h2>營收與消費統計 (Revenue & Deductions)</h2>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1rem' }}>
+            <div className="revenue-toggles">
               <button style={{ backgroundColor: revenuePeriod === 'yearly' ? 'var(--accent)' : 'var(--input-bg)', color: revenuePeriod === 'yearly' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('yearly'); fetchRevenue('yearly'); }}>年度</button>
               <button style={{ backgroundColor: revenuePeriod === 'monthly' ? 'var(--accent)' : 'var(--input-bg)', color: revenuePeriod === 'monthly' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('monthly'); fetchRevenue('monthly'); }}>月份</button>
               <button style={{ backgroundColor: revenuePeriod === 'daily' ? 'var(--accent)' : 'var(--input-bg)', color: revenuePeriod === 'daily' ? '#121212' : 'var(--text-primary)' }} onClick={() => { setRevenuePeriod('daily'); fetchRevenue('daily'); }}>每日</button>

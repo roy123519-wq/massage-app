@@ -82,11 +82,11 @@ export default function MemberDetail() {
   return (
     <div className="app-container">
       <nav className="navbar">
-        <div className="navbar-brand">
+        <div className="navbar-brand" style={{ whiteSpace: 'nowrap' }}>
           <Link to="/">← 回到會員列表</Link>
         </div>
-        <div>
-          <button style={{ marginRight: '1rem', backgroundColor: 'var(--success)', color: '#121212' }} onClick={() => { setTransactionType('topup'); setSelectedPlanId(''); setTransactionForm({ amount: '', note: '' }); setShowTransactionModal(true); }}>
+        <div className="header-actions-right">
+          <button style={{ backgroundColor: 'var(--success)', color: '#121212' }} onClick={() => { setTransactionType('topup'); setSelectedPlanId(''); setTransactionForm({ amount: '', note: '' }); setShowTransactionModal(true); }}>
             儲值 (Top Up)
           </button>
           <button className="danger" onClick={() => { setTransactionType('deduction'); setTransactionForm({ amount: '', note: '' }); setShowTransactionModal(true); }}>
@@ -98,7 +98,7 @@ export default function MemberDetail() {
       <main className="main-content">
         <div className="card" style={{ marginBottom: '2rem' }}>
           <h2>會員詳細資料</h2>
-          <div style={{ marginTop: '1rem', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+          <div className="member-info-grid">
             <div>
               <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>姓名</div>
               <div style={{ fontSize: '1.2rem' }}>{member.name}</div>
